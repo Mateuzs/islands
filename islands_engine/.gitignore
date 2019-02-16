@@ -23,7 +23,7 @@ erl_crash.dump
 islands_engine-*.tar
 
 #DS_Store and stuff not needed
-.DS_Store
+**/.DS_Store
 .elixir_ls
 
 
