@@ -33,3 +33,9 @@
     </ul>
   </article>
 </section>
+<section class="row">
+<div >
+<button id='button' class="btn"> START GAME !</button>
+<input class='input' id='input-name'></input>
+
+</section>

@@ -1,14 +1,14 @@
 // NOTE: The contents of this file will only be executed if
-// you uncomment its entry in "assets/js/app.js".
+// you uncomment its entry in 'assets/js/app.js'.
 
 // To use Phoenix channels, the first step is to import Socket,
-// and connect at the socket path in "lib/web/endpoint.ex".
+// and connect at the socket path in 'lib/web/endpoint.ex'.
 //
 // Pass the token on params as below. Or remove it
 // from the params if you are not using authentication.
-import {Socket} from "phoenix"
+import { Socket } from "phoenix";
 
-let socket = new Socket("/socket", {params: {token: window.userToken}})
+let socket = new Socket("/socket", { params: { token: window.userToken } });
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -52,12 +52,31 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 //     end
 //
 // Finally, connect to the socket:
-socket.connect()
+socket.connect();
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+let button = document.querySelector("#button");
+let input = document.querySelector("#input-name");
 
-export default socket
+button.addEventListener("click", () => {
+  let channel = socket.channel("game:" + input.value, { screen_name: "Mat" });
+
+  channel
+    .join()
+    .receive("ok", resp => {
+      console.log("Joined successfully", resp);
+      channel
+        .push("new_game")
+        .receive("ok", response => {
+          console.log("New Game!", response);
+        })
+        .receive("error", response => {
+          console.log("Unable to start a new game.", response);
+        });
+    })
+    .receive("error", resp => {
+      console.log("Unable to join", resp);
+    });
+});
+
+export default socket;
